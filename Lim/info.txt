@@ -1,0 +1,7 @@
+User First Name: Lim
+User Last Name: A
+User Age: 24
+User IC Number: 012345678910
+User Birthday: 10/10/2000
+User Email: A@gmail.com
+User Address: a

@@ -1,0 +1,268 @@
+# depslib dependency file v1.0
+1737014231 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\account.cpp
+	"account.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<ctime>
+
+1737012357 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\settings.cpp
+	"settings.h"
+	"auth.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<cstdio>
+	<unistd.h>
+
+1736944189 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\utility.cpp
+	"utility.h"
+	<iostream>
+	<sys/stat.h>
+	<ctime>
+
+1736941779 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\utility.cpp
+	<iostream>
+	<string>
+	<ctime>
+	<sys/stat.h>
+	<errno.h>
+	<direct.h>
+
+1737013075 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\auth.cpp
+	"auth.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<iomanip>
+	<sstream>
+
+1736944176 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\utility.h
+	<string>
+
+1737009666 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\main.cpp
+	<iostream>
+	<unistd.h>
+	"auth.h"
+	"user.h"
+	"account.h"
+	"settings.h"
+	<windows.h>
+
+1737002258 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\auth.h
+	<string>
+
+1736944114 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\user.h
+	<string>
+
+1737002433 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\account.h
+	<string>
+
+1737012166 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\settings.h
+	<string>
+
+1736944126 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system\user.cpp
+	"user.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+
+1737120879 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\account.cpp
+	"account.h"
+	"utility.h"
+	<fstream>
+	<string>
+	<iostream>
+	<sstream>
+	<ctime>
+
+1737002432 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\account.h
+	<string>
+
+1736944176 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\utility.h
+	<string>
+
+1737116412 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\auth.cpp
+	"auth.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<iomanip>
+	<sstream>
+	<unistd.h>
+	<windows.h>
+
+1737002258 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\auth.h
+	<string>
+
+1737009666 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\main.cpp
+	<iostream>
+	<unistd.h>
+	"auth.h"
+	"user.h"
+	"account.h"
+	"settings.h"
+	<windows.h>
+
+1736944114 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\user.h
+	<string>
+
+1737012166 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\settings.h
+	<string>
+
+1737012356 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\settings.cpp
+	"settings.h"
+	"auth.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<cstdio>
+	<unistd.h>
+
+1736944126 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\user.cpp
+	"user.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+
+1736944188 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\utility.cpp
+	"utility.h"
+	<iostream>
+	<sys/stat.h>
+	<ctime>
+
+1737119719 source:c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\sorting.cpp
+	"sorting.h"
+	<iostream>
+	<vector>
+	<string>
+
+1737119700 c:\users\acera\documents\learning\tds6213-data structures and algorithms\lab\bank system (2)\bank system\sorting.h
+	<string>
+	<vector>
+
+1737204856 source:c:\users\user\downloads\bank system2\bank system\auth.cpp
+	"auth.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<iomanip>
+	<sstream>
+	<unistd.h>
+	<windows.h>
+
+1737204856 c:\users\user\downloads\bank system2\bank system\auth.h
+	<string>
+
+1737204856 c:\users\user\downloads\bank system2\bank system\utility.h
+	<string>
+
+1737204856 source:c:\users\user\downloads\bank system2\bank system\main.cpp
+	<iostream>
+	<unistd.h>
+	"auth.h"
+	"user.h"
+	"account.h"
+	"settings.h"
+	<windows.h>
+
+1737204856 c:\users\user\downloads\bank system2\bank system\user.h
+	<string>
+
+1737205317 c:\users\user\downloads\bank system2\bank system\account.h
+	<string>
+	<vector>
+
+1737204856 c:\users\user\downloads\bank system2\bank system\settings.h
+	<string>
+
+1737204856 source:c:\users\user\downloads\bank system2\bank system\settings.cpp
+	"settings.h"
+	"auth.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<cstdio>
+	<unistd.h>
+
+1737204856 source:c:\users\user\downloads\bank system2\bank system\user.cpp
+	"user.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+
+1737204856 source:c:\users\user\downloads\bank system2\bank system\utility.cpp
+	"utility.h"
+	<iostream>
+	<sys/stat.h>
+	<ctime>
+
+1737211035 source:c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\account.cpp
+	"account.h"
+	<fstream>
+	<string>
+	<iostream>
+	<sstream>
+	<vector>
+	<algorithm>
+	<ctime>
+
+1737211035 c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\account.h
+	<string>
+	<vector>
+
+1737114020 source:c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\auth.cpp
+	"auth.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<iomanip>
+	<sstream>
+	<unistd.h>
+	<unordered_map>
+	<queue>
+
+1737044728 c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\auth.h
+	<string>
+	<unordered_map>
+	<queue>
+
+1737211036 c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\utility.h
+	<string>
+
+1737213817 source:c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\main.cpp
+	<iostream>
+	<unistd.h>
+	"auth.h"
+	"user.h"
+	"account.h"
+	"settings.h"
+	<windows.h>
+
+1737211036 c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\user.h
+	<string>
+
+1737211035 c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\settings.h
+	<string>
+
+1737211035 source:c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\settings.cpp
+	"settings.h"
+	"auth.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+	<cstdio>
+	<unistd.h>
+
+1737211036 source:c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\user.cpp
+	"user.h"
+	"utility.h"
+	<iostream>
+	<fstream>
+
+1737211036 source:c:\users\acera\downloads\bank system 4.0\bank system 4.0\bank system\utility.cpp
+	"utility.h"
+	<iostream>
+	<sys/stat.h>
+	<ctime>
+

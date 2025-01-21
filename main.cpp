@@ -85,7 +85,7 @@ void displayHomeScreen(string user_name, string balance, string password) {
     do {
         system("CLS");
         cout << "Welcome to the Home Screen, " << "\033[32m" << user_name << "\033[0m!" << endl;
-        cout << "1. 🎯Check Account\n2. 🔁Transfer\n3. 💳Top Up\n4. 📜View Transaction History\n5. ⚙️Settings\n6. Delete Account\n7. 🔚Logout" << endl;
+        cout << "1. 🎯Check Account\n2. 🔁Transfer\n3. 💳Top Up\n4. 📜View Transaction History\n5. ⚙️Settings\n6. Delete Account🗑️\n7. 🔚Logout" << endl;
         cout << "Select an option: ";
         cin >> option;
 

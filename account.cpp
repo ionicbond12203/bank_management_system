@@ -1,11 +1,11 @@
 #include "account.h"
 #include <fstream>
-#include <string>
 #include <iostream>
 #include <sstream>
 #include <vector>
 #include <algorithm>
 #include <ctime>
+
 using namespace std;
 
 void Account::check_account(const string& user_name) {
@@ -161,77 +161,101 @@ void Account::top_up(const string& user_name) {
     system("CLS");
 }
 
-// Transaction sorting functions
+// Helper function to parse each transaction line
 Account::Transaction Account::parseTransactionLine(const string& line) {
-    size_t dateEnd = line.find("]");
-    string dateTime = line.substr(1, dateEnd - 1);
-    string description = line.substr(dateEnd + 2);
+    Transaction transaction;
 
-    size_t spacePos = dateTime.find(" ");
-    string date = dateTime.substr(0, spacePos);
-    string time = dateTime.substr(spacePos + 1);
+    size_t datePos = line.find("[");
+    size_t endDatePos = line.find("]");
+    size_t amountPos = line.find("Amount: RM");
+    size_t senderPos = line.find("Sender: ");
 
-    double amount = 0;
-    string sender;
-
-    size_t rmPos = description.find("RM");
-    if (rmPos != string::npos) {
-        size_t endPos = description.find(" ", rmPos + 2);
-        amount = stod(description.substr(rmPos + 2, endPos - rmPos - 2));
+    if (datePos != string::npos && endDatePos != string::npos) {
+        transaction.date = line.substr(datePos + 1, endDatePos - datePos - 1);
     }
 
-    size_t fromPos = description.find("from");
-    if (fromPos != string::npos) {
-        sender = description.substr(fromPos + 5);
+    size_t descriptionEnd = amountPos == string::npos ? senderPos : amountPos;
+    transaction.description = line.substr(endDatePos + 2, descriptionEnd - endDatePos - 2);
+
+    if (amountPos != string::npos) {
+        size_t amountEndPos = line.find(" ", amountPos + 10);
+        transaction.amount = stod(line.substr(amountPos + 10, amountEndPos - amountPos - 10));
     }
 
-    return {date, time, description, amount, sender};
+    if (senderPos != string::npos) {
+        transaction.sender = line.substr(senderPos + 8);
+    }
+
+    return transaction;
 }
 
+// Read transactions from file and parse each line
 vector<Account::Transaction> Account::readTransactions(const string& filePath) {
-    ifstream file(filePath);
     vector<Transaction> transactions;
+    ifstream file(filePath);
+    string line;
 
     if (!file.is_open()) {
-        cerr << "Error opening transaction history file for sorting." << endl;
+        cerr << "Error opening transaction file: " << filePath << endl;
         return transactions;
     }
 
-    string line;
     while (getline(file, line)) {
-        transactions.push_back(parseTransactionLine(line));
+        if (!line.empty()) {
+            Transaction transaction = parseTransactionLine(line);
+            transactions.push_back(transaction);
+        }
     }
+
     file.close();
     return transactions;
 }
 
+// QuickSort implementation
+void Account::quickSort(vector<Transaction>& transactions, int low, int high, const string& criteria, const string& order) {
+    if (low < high) {
+        int pivotIndex = partition(transactions, low, high, criteria, order);
+        quickSort(transactions, low, pivotIndex - 1, criteria, order);
+        quickSort(transactions, pivotIndex + 1, high, criteria, order);
+    }
+}
+
+int Account::partition(vector<Transaction>& transactions, int low, int high, const string& criteria, const string& order) {
+    Transaction pivot = transactions[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        bool condition = false;
+
+        if (criteria == "date") {
+            condition = (order == "asc") ? (transactions[j].date < pivot.date) : (transactions[j].date > pivot.date);
+        } else if (criteria == "time") {
+            condition = (order == "asc") ? (transactions[j].time < pivot.time) : (transactions[j].time > pivot.time);
+        } else if (criteria == "amount") {
+            condition = (order == "asc") ? (transactions[j].amount < pivot.amount) : (transactions[j].amount > pivot.amount);
+        } else if (criteria == "sender") {
+            condition = (order == "asc") ? (transactions[j].sender < pivot.sender) : (transactions[j].sender > pivot.sender);
+        }
+
+        if (condition) {
+            i++;
+            swap(transactions[i], transactions[j]);
+        }
+    }
+    swap(transactions[i + 1], transactions[high]);
+    return i + 1;
+}
+
+// Display transactions after sorting
 void Account::sortAndDisplayTransactions(const string& user_name, const string& criteria, const string& order) {
     string filePath = user_name + "/transactions.txt";
     vector<Transaction> transactions = readTransactions(filePath);
 
-    if (criteria == "date") {
-        sort(transactions.begin(), transactions.end(), [&](const Transaction& a, const Transaction& b) {
-            return order == "asc" ? a.date < b.date : a.date > b.date;
-        });
-    } else if (criteria == "time") {
-        sort(transactions.begin(), transactions.end(), [&](const Transaction& a, const Transaction& b) {
-            return order == "asc" ? a.time < b.time : a.time > b.time;
-        });
-    } else if (criteria == "amount") {
-        sort(transactions.begin(), transactions.end(), [&](const Transaction& a, const Transaction& b) {
-            return order == "asc" ? a.amount < b.amount : a.amount > b.amount;
-        });
-    } else if (criteria == "sender") {
-        sort(transactions.begin(), transactions.end(), [&](const Transaction& a, const Transaction& b) {
-            return order == "asc" ? a.sender < b.sender : a.sender > b.sender;
-        });
-    } else {
-        cerr << "Invalid sorting criteria." << endl;
-        return;
-    }
+    quickSort(transactions, 0, transactions.size() - 1, criteria, order);
 
+    // Only display date, time, and description
     for (const auto& transaction : transactions) {
-        cout << "[" << transaction.date << " " << transaction.time << "] " << transaction.description << endl;
+        cout << "[" << transaction.date << "] " << transaction.description << endl;
     }
     system("pause");
     system("CLS");
@@ -250,7 +274,6 @@ void Account::view_transaction_history(const string& user_name) {
 }
 
 void Account::delete_account(const string& user_name) {
-    // Delete user directory
     string command = "rmdir /s /q " + user_name; // Windows command to delete the folder and its contents
     int result = system(command.c_str());
 
@@ -259,31 +282,21 @@ void Account::delete_account(const string& user_name) {
         return;
     }
 
-    // Update the users.txt file to exclude the deleted user
     ifstream users_file("users.txt");
     ofstream temp_file("temp_users.txt");
-    string file_username, file_password, file_account_number;
+    string line;
 
-    if (!users_file.is_open() || !temp_file.is_open()) {
-        cerr << "Error opening users file or creating a temporary file." << endl;
-        return;
-    }
-
-    // Copy all users except the one to be deleted into the temporary file
-    while (users_file >> file_username >> file_password >> file_account_number) {
-        if (file_username != user_name) {
-            temp_file << file_username << " " << file_password << " " << file_account_number << "\n";
+    while (getline(users_file, line)) {
+        if (line != user_name) {
+            temp_file << line << endl;
         }
     }
 
     users_file.close();
     temp_file.close();
 
-    // Replace the original users.txt with the updated temp file
-    if (remove("users.txt") != 0 || rename("temp_users.txt", "users.txt") != 0) {
-        cerr << "Error updating users.txt after deleting the account." << endl;
-    } else {
-        cout << "Account and associated data for user '" << user_name << "' deleted successfully." << endl;
-    }
-}
+    remove("users.txt");
+    rename("temp_users.txt", "users.txt");
 
+    cout << "\033[32m✅ Account deleted successfully. ✅\033[0m" << endl;
+}

@@ -39,18 +39,18 @@ void preHome(string user_name, string password, string balance) {
             cin >> password;
 
             if (auth.isAccountLocked(user_name)) {
-                cout << "\033[31mYour account is locked🔒. Please try later.\033[37m\n";
+                cout << "\033[31mYour account is locked🔒. Please try later.\033[0m\n";
                 system("pause");
                 return;
             }
 
             if (auth.signIn(user_name, password)) {
-                cout << "\033[32m✅Login successful!✅\033[37m\n";
+                cout << "\033[32m✅Login successful!✅\033[0m\n";
                 system("pause");
                 auth.resetFailedAttempts(user_name);
                 displayHomeScreen(user_name, balance, password);
             } else {
-                cout << "\033[31m\n❌Invalid username or password.❌\033[37m\n";
+                cout << "\033[31m\n❌Invalid username or password.❌\033[0m\n";
                 system("pause");
                 auth.recordFailedAttempt(user_name);
             }
@@ -59,7 +59,7 @@ void preHome(string user_name, string password, string balance) {
             cin >> user_name;
 
             if (auth.usernameExists(user_name)) {
-                cout << "\033[33m⚠️Username already exists. Please choose another.⚠️\033[37m\n";
+                cout << "\033[33m⚠️Username already exists. Please choose another.⚠️\033[0m\n";
                 system("pause");
                 continue;
             }
@@ -68,20 +68,20 @@ void preHome(string user_name, string password, string balance) {
             cin >> password;
 
             if (auth.registerUser(user_name, password)) {
-                cout << "\033[32mRegistration successful!\033[37m\n";
+                cout << "\033[32mRegistration successful!\033[0m\n";
                 system("pause");
                 user.userInfoFillIn(user_name);
                 user.createBalanceFile(user_name);
             } else {
-                cout << "\033[31m❌Registration failed.❌\033[37m\n";
+                cout << "\033[31m❌Registration failed.❌\033[0m\n";
                 system("pause");
             }
         } else if (choice == 3) {
-            cout << "\033[31mExiting the application.\033[37m\n";
+            cout << "\033[31mExiting the application.\033[0m\n";
             system("pause");
             break;
         } else {
-            cout << "\033[31m❌Invalid choice. Please try again.❌\033[37m\n";
+            cout << "\033[31m❌Invalid choice. Please try again.❌\033[0m\n";
             system("pause");
         }
     } while (choice != 3);

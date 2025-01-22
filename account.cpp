@@ -35,16 +35,18 @@ void Account::transfer(const string& sender_name) {
     cout << "Enter recipient username 👤: ";
     cin >> recipient_name;
     cout << "Enter amount to transfer 💲: ";
-    cin >> amount;
 
-    if (amount <= 0) {
-        cout << "\033[31m❌Invalid amount.❌\033[0m" << endl;
-        return;
+    // Validate input to ensure the amount is a valid number
+    while (!(cin >> amount) || amount <= 0) {
+        cout << "\033[31m❌Invalid amount. Please enter a positive number: ❌\033[0m";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
 
     string sender_file = sender_name + "/balance.txt";
     string recipient_file = recipient_name + "/balance.txt";
 
+    // Check sender account
     ifstream sender_account(sender_file);
     if (!sender_account.is_open()) {
         cerr << "\033[31m❌Sender account not found: " << sender_file << "❌\033[0m" << endl;
@@ -66,6 +68,7 @@ void Account::transfer(const string& sender_name) {
         return;
     }
 
+    // Check recipient account
     ifstream recipient_account(recipient_file);
     if (!recipient_account.is_open()) {
         cerr << "\033[31m❌Recipient account not found: " << recipient_file << "❌\033[0m" << endl;
@@ -81,19 +84,26 @@ void Account::transfer(const string& sender_name) {
     }
     recipient_account.close();
 
+    // Deduct amount from sender and add to recipient
     sender_balance -= amount;
     recipient_balance += amount;
 
+    // Update balances
+    update_balance(sender_name, sender_balance);
+    update_balance(recipient_name, recipient_balance);
+
+    // Log the transaction
     string sender_desc = "Transferred RM" + to_string(amount) + " to " + recipient_name;
     string recipient_desc = "Received RM" + to_string(amount) + " from " + sender_name;
 
-    add_transaction(recipient_name, sender_name + " Transfer RM" + to_string(amount) + " Description: " + sender_desc);
-    add_transaction(sender_name, recipient_name + " Receive RM" + to_string(amount) + " Description: " + recipient_desc);
+    add_transaction(sender_name, sender_desc);
+    add_transaction(recipient_name, recipient_desc);
 
     cout << "\033[32m✅ Transfer successful! ✅\033[0m" << endl;
     system("pause");
     system("CLS");
 }
+
 
 void Account::update_balance(const string& user_name, double new_balance) {
     string filePath = user_name + "/balance.txt";

@@ -14,7 +14,8 @@ bool Auth::signIn(const string& user_name, const string& password) {
     string file_username, file_password;
 
     if (!users_file.is_open()) {
-        cerr << "Error opening users file." << endl;
+        cerr << "\033[33m⚠️Error opening users file.\033[0m" << endl;
+        system("pause");
         return false;
     }
 
@@ -57,7 +58,7 @@ string Auth::generateAccountNumber() {
 bool Auth::registerUser(const string& user_name, const string& password) {
     // Check if the username already exists in the hashtable
     if (users.find(user_name) != users.end()) {
-        cerr << "Username already exists." << endl;
+        cerr << "\033[33m⚠️Username already exists.\033[0m" << endl;
         return false;
     }
 
@@ -70,14 +71,15 @@ bool Auth::registerUser(const string& user_name, const string& password) {
     // Append the new user to the users.txt file
     ofstream users_file("users.txt", ios::app);
     if (!users_file.is_open()) {
-        cerr << "Error opening users file." << endl;
+        cerr << "\033[33m⚠️Error opening users file.\033[0m" << endl;
+        system("pause");
         return false;
     }
     users_file << user_name << " " << password << " " << account_number << "\n";
     users_file.close();
 
     // Print confirmation for the user
-    cout << "Your account number is: " << account_number << endl;
+    cout << "\033[36mYour account number is: " << account_number <<"\033[0m"<< endl;
 
     return true;
 }
@@ -87,7 +89,8 @@ bool Auth::usernameExists(const string& user_name) {
     string file_username, file_password;
 
     if (!users_file.is_open()) {
-        cerr << "Error opening users file." << endl;
+        cerr << "\033[33m⚠️Error opening users file.\033[0m" << endl;
+        system("pause");
         return false;
     }
 
@@ -121,7 +124,7 @@ bool Auth::isAccountLocked(const string& user_name) {
 
     // If the queue size is greater than or equal to the maximum login attempts, lock the account
     if (failed_attempts_queue.size() >= 3) {
-        cout << "Account is locked. Try again later." << endl;
+        //cout << "\033[33m⚠️Account is locked. Try again later.\033[0m" << endl;
         return true;
     }
 
@@ -168,7 +171,7 @@ void Auth::recordFailedAttempt(const string& user_name) {
         }
         file_out << lockout_time;  // Add lockout time at the end
 
-        cout << "Account locked due to too many failed attempts. Try again later." << endl;
+        //cout << "\033[33m⚠️Account locked due to too many failed attempts. Try again later.⚠️\033[0m" << endl;
     } else {
         // Write the failed attempts and update file without lockout
         ofstream file_out(attemptsFile);

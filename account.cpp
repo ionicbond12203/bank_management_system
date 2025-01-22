@@ -127,11 +127,12 @@ void Account::add_transaction(const string& user_name, const string& transaction
 void Account::top_up(const string& user_name) {
     double amount;
     cout << "Enter amount to top-up: ";
-    cin >> amount;
 
-    if (amount <= 0 || amount > 20000) {
-        cout << "Invalid amount." << endl;
-        return;
+    // Input validation loop
+    while (!(cin >> amount) || amount <= 0 || amount > 20000) {
+        cout << "\033[31mInvalid amount. Please enter a number between 0 and 20,000\033[0m";
+        cin.clear();                // Clear error flags
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
     }
 
     string filePath = user_name + "/" + "balance.txt";
@@ -142,7 +143,7 @@ void Account::top_up(const string& user_name) {
     }
 
     string line;
-    double balance;
+    double balance = 0.0; // Default balance to 0
     while (getline(file, line)) {
         if (line.find("Balance") != string::npos) {
             balance = stod(line.substr(line.find(":") + 2));

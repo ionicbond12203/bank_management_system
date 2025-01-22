@@ -6,6 +6,8 @@
 #include "settings.h"
 #include <windows.h>
 #include <conio.h>
+#include <limits>
+
 
 
 using namespace std;
@@ -82,6 +84,8 @@ void preHome(string user_name, string password, string balance) {
             break;
         } else {
             cout << "\033[31m❌Invalid choice. Please try again.❌\033[0m\n";
+            cin.clear();                // Clear error flags
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
             system("pause");
         }
     } while (choice != 3);

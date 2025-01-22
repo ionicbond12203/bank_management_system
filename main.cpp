@@ -27,6 +27,7 @@ void preHome(string user_name, string password, string balance) {
 
     int choice;
     do {
+        system("cls");
         cout << "Welcome to the Bank System\n";
         cout << "1. Login🔑\n2. Register✍️\n3. Exit❌\nEnter your choice: ";
         cin >> choice;

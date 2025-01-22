@@ -14,6 +14,7 @@ void Account::check_account(const string& user_name) {
 
     if (!file.is_open()) {
         cerr << "\033[31m❌Error opening account file.❌\033[0m" << endl;
+        system("pause");
         return;
     }
 
@@ -38,7 +39,7 @@ void Account::transfer(const string& sender_name) {
 
     // Validate input to ensure the amount is a valid number
     while (!(cin >> amount) || amount <= 0) {
-        cout << "\033[31m❌Invalid amount. Please enter a positive number: ❌\033[0m";
+        cout << "\033[31m❌Invalid amount!❌ \nPlease enter a positive number: \033[0m";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
@@ -50,6 +51,7 @@ void Account::transfer(const string& sender_name) {
     ifstream sender_account(sender_file);
     if (!sender_account.is_open()) {
         cerr << "\033[31m❌Sender account not found: " << sender_file << "❌\033[0m" << endl;
+        system("pause");
         return;
     }
 
@@ -65,13 +67,15 @@ void Account::transfer(const string& sender_name) {
 
     if (sender_balance < amount) {
         cout << "\033[31m❌Insufficient balance!❌\033[0m" << endl;
+        system("pause");
         return;
     }
 
     // Check recipient account
     ifstream recipient_account(recipient_file);
     if (!recipient_account.is_open()) {
-        cerr << "\033[31m❌Recipient account not found: " << recipient_file << "❌\033[0m" << endl;
+        cerr << "\033[31m❌Recipient account not found: " << recipient_name << "❌\033[0m" << endl;
+        system("pause");
         return;
     }
 
@@ -111,7 +115,8 @@ void Account::update_balance(const string& user_name, double new_balance) {
     if (file.is_open()) {
         file << "Balance: " << new_balance << endl;
     } else {
-        cerr << "Error updating balance." << endl;
+        cerr << "\033[31m❌Error updating balance.❌\033[37m" << endl;
+        system("pause");
     }
 }
 
@@ -120,7 +125,8 @@ void Account::add_transaction(const string& user_name, const string& transaction
 
     ofstream file(transaction_file, ios::app); // Append mode
     if (!file.is_open()) {
-        cerr << "Error: Unable to record transaction for " << user_name << "." << endl;
+        cerr << "\033[33m⚠️Error: Unable to record transaction for " << user_name << ".\033[37m" << endl;
+        system("pause");
         return;
     }
 
@@ -136,11 +142,11 @@ void Account::add_transaction(const string& user_name, const string& transaction
 
 void Account::top_up(const string& user_name) {
     double amount;
-    cout << "Enter amount to top-up: ";
+    cout << "\033[36mEnter amount to top-up: \033[37m";
 
     // Input validation loop
     while (!(cin >> amount) || amount <= 0 || amount > 20000) {
-        cout << "\033[31mInvalid amount. Please enter a number between 0 and 20,000\033[0m";
+        cout << "\033[33m⚠️Invalid amount⚠️. \n\033[31mPlease enter a number between 0 and 20,000:\033[0m";
         cin.clear();                // Clear error flags
         cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
     }
@@ -148,7 +154,8 @@ void Account::top_up(const string& user_name) {
     string filePath = user_name + "/" + "balance.txt";
     ifstream file(filePath);
     if (!file.is_open()) {
-        cerr << "Error opening file." << endl;
+        cerr << "\033[33⚠️mError opening file.\033[37m" << endl;
+        system("pause");
         return;
     }
 
@@ -167,7 +174,7 @@ void Account::top_up(const string& user_name) {
     add_transaction(user_name, "Top Up RM" + to_string(amount) + " using ATM");
 
     cout << "\033[32m✅ Top-up successful! ✅\033[0m" << endl;
-    cout << "New Balance: RM" << balance << endl;
+    cout << "\033[36mNew Balance: RM" << balance <<"\033[37m"<< endl;
     system("pause");
     system("CLS");
 }
@@ -207,7 +214,8 @@ vector<Account::Transaction> Account::readTransactions(const string& filePath) {
     string line;
 
     if (!file.is_open()) {
-        cerr << "Error opening transaction file: " << filePath << endl;
+        cerr << "\033[33m⚠️Error opening transaction file: \033[37m" << filePath << endl;
+        system("pause");
         return transactions;
     }
 
@@ -238,13 +246,13 @@ int Account::partition(vector<Transaction>& transactions, int low, int high, con
     for (int j = low; j < high; j++) {
         bool condition = false;
 
-        if (criteria == "date") {
+        if (criteria == "1") {
             condition = (order == "asc") ? (transactions[j].date < pivot.date) : (transactions[j].date > pivot.date);
-        } else if (criteria == "time") {
+        } else if (criteria == "2") {
             condition = (order == "asc") ? (transactions[j].time < pivot.time) : (transactions[j].time > pivot.time);
-        } else if (criteria == "amount") {
+        } else if (criteria == "3") {
             condition = (order == "asc") ? (transactions[j].amount < pivot.amount) : (transactions[j].amount > pivot.amount);
-        } else if (criteria == "sender") {
+        } else if (criteria == "4") {
             condition = (order == "asc") ? (transactions[j].sender < pivot.sender) : (transactions[j].sender > pivot.sender);
         }
 
@@ -273,14 +281,40 @@ void Account::sortAndDisplayTransactions(const string& user_name, const string& 
 }
 
 void Account::view_transaction_history(const string& user_name) {
-    cout << "Sort by (date/time/amount/sender): ";
-    string criteria;
-    cin >> criteria;
+    string criteria, order;
 
-    cout << "Order (asc/desc): ";
-    string order;
-    cin >> order;
+    // Input validation for sorting criteria
+    while (true) {
+        cout << "Sort by:\n";
+        cout << "1. Date\n";
+        cout << "2. Time\n";
+        cout << "3. Amount\n";
+        cout << "4. Sender\n";
+        cout << "Enter your choice (1-4): ";
+        cin >> criteria;
 
+        if (criteria == "1" || criteria == "2" || criteria == "3" || criteria == "4") {
+            break; // Valid input
+        } else {
+            cout << "\033[31m❌ Invalid choice! Please enter a valid option (1-4). ❌\033[0m\n";
+            system("pause");
+            system("cls");
+        }
+    }
+
+    // Input validation for sorting order
+    while (true) {
+        cout << "Order (asc/desc): ";
+        cin >> order;
+
+        if (order == "asc" || order == "desc") {
+            break; // Valid input
+        } else {
+            cout << "\033[31m❌ Invalid! Please enter 'asc' or 'desc'. ❌\033[0m\n";
+        }
+    }
+
+    // Proceed to sort and display transactions
     sortAndDisplayTransactions(user_name, criteria, order);
 }
 
@@ -289,7 +323,7 @@ void Account::delete_account(const string& user_name) {
     int result = system(command.c_str());
 
     if (result != 0) {
-        cerr << "Failed to delete user directory for: " << user_name << endl;
+        cerr << "\033[33m⚠️Failed to delete user directory for: " << user_name <<"\033[37m"<< endl;
         return;
     }
 

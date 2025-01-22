@@ -5,6 +5,8 @@
 #include <fstream>
 #include <cstdio>
 #include <unistd.h>//for sleep
+#include <limits>
+
 using namespace std;
 
 void Settings::settings_interface(string &user_name){
@@ -12,7 +14,7 @@ void Settings::settings_interface(string &user_name){
     int choice;
     system("CLS");
     cout << "Settings"<<endl;
-    cout << "1. Change username\n2. View user information\n3. Edit password\n4. Exit settings"<<endl;
+    cout << "1. Change username👤\n2. View user informationℹ️\n3. Edit password🔑\n4. Exit settings🏃"<<endl;
     cout << "Enter your choice: ";
     cin >> choice;
      switch (choice) {
@@ -27,12 +29,22 @@ void Settings::settings_interface(string &user_name){
             case 3:
                 system("CLS");
                 changePassword(user_name);
+                break;
             case 4:
-                cout<< "Exiting settings."<<endl;
-                sleep(2);
+                system("cls");
+                cout<< "Saving any changed."<<endl;
+                sleep(1);
+                system("cls");
+                cout<< "Saving any changed.."<<endl;
+                sleep(1);
+                system("cls");
+                cout<< "Saving any changed..."<<endl;
+                sleep(1);
                 return;
             default:
-                cout << "Invalid choice";
+                cout << "\033[31m❌Invalid choice❌\033[0m";
+                cin.clear();                // Clear error flags
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
                 sleep(1);
      }
    }while (true);
@@ -46,7 +58,8 @@ void Settings::rename(string &user_name) {
     cin >>new_user_name;
 
     if (auth.usernameExists(new_user_name)){
-        cout << "Username already exists. Please choose a different username." << endl;
+        cout << "\033[33m⚠️Username already exists. Please choose a different username.⚠️\033[0m" << endl;
+        system("pause");
         return;
     }
 
@@ -56,7 +69,8 @@ void Settings::rename(string &user_name) {
 
     // Renaming folder
     if (std::rename(old_folder.c_str(), new_folder.c_str()) != 0) {
-        cerr << "Error renaming folder." << endl;
+        cerr << "\033[33m⚠️Error renaming folder.\033[30m" << endl;
+        system("pause");
         return;
     }
 
@@ -82,7 +96,7 @@ void Settings::rename(string &user_name) {
     std::rename("users_temp.txt", "users.txt");
 
     user_name = new_user_name;
-    cout << "Username successfully changed to " << new_user_name << endl;
+    cout << "\033[32m✅Username successfully changed to " << new_user_name <<"\033[0m"<< endl;
     system("pause");
     system("CLS");
 }
@@ -90,15 +104,16 @@ void Settings::rename(string &user_name) {
 void Settings::changePassword(string &user_name)
 {
     string new_password, confirm_password;
-    cout << "Enter new password: ";
+    cout << "\033[36mEnter new password: \033[0m";
     cin >> new_password;
 
-    cout << "Confirm new password: ";
+    cout << "\033[36mConfirm new password: \033[0m";
     cin >> confirm_password;
 
     // Check if the passwords match
     if (new_password != confirm_password) {
-        cout << "Passwords do not match. Please try again." << endl;
+        cout << "\033[31m❌Passwords do not match. Please try again.\033[0m" << endl;
+        system("pause");
         return;
     }
 
@@ -108,7 +123,8 @@ void Settings::changePassword(string &user_name)
     string file_username, file_password;
 
     if (!users_file_in.is_open() || !users_file_out.is_open()) {
-        cerr << "Error opening users file." << endl;
+        cerr << "\033[33m⚠️Error opening users file.\033[0m" << endl;
+        system("pause");
         return;
     }
 
@@ -130,9 +146,9 @@ void Settings::changePassword(string &user_name)
     if (password_updated) {
         remove("users.txt");
         std::rename("users_temp.txt", "users.txt");
-        cout << "Password successfully updated for user: " << user_name << endl;
+        cout << "\033[32m✅Password successfully updated for user: \033[0m" <<"\033[36m"<< user_name <<"\033[0m"<< endl;
     } else {
-        cout << "Failed to update password. User not found." << endl;
+        cout << "\033[31m❌Failed to update password. User not found.❌\033[0m" << endl;
         remove("users_temp.txt"); // Clean up temporary file
     }
     system("pause");
@@ -148,7 +164,7 @@ void Settings::view_user_info(string& user_name)
 
     // Ensure file exists
     if (!file.is_open()) {
-        cerr << "Error opening file for user: " << user_name << endl;
+        cerr << "\033[33m⚠️Error opening users file.\033[0m" << user_name << endl;
         system("pause");
         return;
     }
@@ -163,17 +179,19 @@ void Settings::view_user_info(string& user_name)
     cout << "1 = yes, 2 = no\n";
     cin >> input;
 
-    if(input = '1')
+    if(input == 1)
     {
         system("CLS");
         editUserInfo(user_name);
-    }else if (input = '2')
+    }else if (input == 2)
     {
-        system("pause");
         system("CLS");
+        settings_interface(user_name);
     }else
     {
-        cout << "invalid input\n";
+        cout << "\033[31m❌Invalid choice❌\033[0m";
+        cin.clear();                // Clear error flags
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
         system("pause");
         system("CLS");
     }
@@ -184,11 +202,12 @@ void Settings::view_user_info(string& user_name)
 void Settings::editUserInfo(const string& user_name) {
     int input;
     string folderName = user_name;
-    string fileName = folderName + "/"  + " info.txt";
+    string fileName = folderName + "/"  + "info.txt";
 
     ifstream file(fileName);
     if (!file.is_open()) {
-        cerr << "Failed to open user info file." << endl;
+        cerr << "\033[33m⚠️Error opening users file.\033[0m" << endl;
+        system("pause");
         return;
     }
 
@@ -231,19 +250,19 @@ void Settings::editUserInfo(const string& user_name) {
     while (true)
         {
         cout << "Please enter your email address: ";
-        getline(cin, new_email);
+        cin>>new_email;
 
         // Check if the email contains both '@' and '.com'
         if (new_email.find('@') != string::npos && new_email.find(".com") != string::npos) {
             break; // Email is valid
         } else {
-            cout << "Invalid email. Email must contain '@' and '.com'." << endl;
+            cout << "\033[31m❌Invalid email. Email must contain '@' and '.com'.❌\033[0m" << endl;
         }
     }
 
     // Prompt for updated address
     cout << "Enter new address: ";
-    getline(cin, new_address);
+    cin>>new_address;
 
 
     // Update the file with new email or address
@@ -258,10 +277,10 @@ void Settings::editUserInfo(const string& user_name) {
         outFile << "User Address: " << new_address << "\n";
         outFile.close();
 
-        cout << "\nInformation updated successfully!" << endl;
+        cout << "\n⚠\033[32mInformation updated successfully!\033[0m" << endl;
         system("pause");
     } else {
-        cerr << "Failed to update user info file." << endl;
+        cerr << "\033[33m⚠️Failed to update user info file.\033[0m" << endl;
         system("pause");
     }
 }

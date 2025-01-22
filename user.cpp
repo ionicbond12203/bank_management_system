@@ -21,7 +21,7 @@ void User::userInfoFillIn(const string& user_name) {
         if (IC.length() == 12 && Utils().isAllDigits(IC)) {
             break;
         } else {
-            cout << "Invalid IC number. Please enter exactly 12 digits." << endl;
+            cout << "\033[31m❌Invalid IC number. Please enter exactly 12 digits.\033[0m" << endl;
         }
     }
 
@@ -35,7 +35,7 @@ void User::userInfoFillIn(const string& user_name) {
         if (day >= 1 && day <= 31 && month >= 1 && month <= 12) {
             break;
         } else {
-            cout << "Invalid date. Please enter a valid day and month." << endl;
+            cout << "\033[31m❌Please enter a valid day or month.\033[0m" << endl;
         }
     }
 
@@ -46,7 +46,7 @@ void User::userInfoFillIn(const string& user_name) {
         if (email.find('@') != string::npos && email.find(".com") != string::npos) {
             break;
         } else {
-            cout << "Invalid email. Email must contain '@' and '.com'." << endl;
+            cout << "\033[31m❌Invalid email. Email must contain '@' and '.com'.\033[0m" << endl;
         }
     }
 
@@ -70,45 +70,6 @@ void User::createUserFile(const string& user_name, const int& age, const string&
         file << "User Birthday: " << birthday << "\n";
         file << "User Email: " << email << "\n";
         file << "User Address: " << address << "\n";
-    }
-}
-
-void User::view_user_info(string& user_name) {
-    string filePath = user_name + "/info.txt";
-    ifstream file(filePath);
-
-    if (!file.is_open()) {
-        cerr << "Error opening user info file." << endl;
-        return;
-    }
-
-    string line;
-    while (getline(file, line)) {
-        cout << line << endl;
-    }
-}
-
-void User::editUserInfo(const string& user_name) {
-    string email, address;
-    while (true) {
-        cout << "Please enter your new email address: ";
-        cin >> email;
-        if (email.find('@') != string::npos && email.find(".com") != string::npos) {
-            break;
-        } else {
-            cout << "Invalid email. Email must contain '@' and '.com'." << endl;
-        }
-    }
-
-    cout << "Please enter your new address: ";
-    cin.ignore();
-    getline(cin, address);
-
-    string fileName = user_name + "/info.txt";
-    ofstream file(fileName, ios::app);
-    if (file.is_open()) {
-        file << "Updated Email: " << email << "\n";
-        file << "Updated Address: " << address << "\n";
     }
 }
 
